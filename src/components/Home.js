@@ -1,4 +1,6 @@
+import { CircularProgress } from "@material-ui/core";
 import React, { useState, useEffect } from "react";
+import useFetch from "../useFetch";
 import BlogList from "./BlogList";
 
 const Home = () => {
@@ -6,32 +8,11 @@ const Home = () => {
     "Hare Krishna Hare Krishna Krishna Krishna Hare Hare , Hare Ram Hare Ram Ram Ram Hare Hare"
   );
   const [chantTitle, setChantTitle] = useState("Chant And Be Happy");
-  const [blogs, setBlogs] = useState(null);
-  const [isPending, setisPending] = useState(true);
-  const [error, setError] = useState(null);
+  const [open, setOpen] = useState(false);
 
-  useEffect(() => {
-    setTimeout(() => {
-      fetch("  http://localhost:7500/bg")
-        .then((res) => {
-          if (!res.ok) {
-            throw Error(
-              "OOps :( Could not fetch the data... Something went wrong.."
-            );
-          }
-          return res.json();
-        })
-        .then((data) => {
-          setBlogs(data);
-          setisPending(false);
-          setError(null);
-        })
-        .catch((error) => {
-          setisPending(false);
-          setError(error.message);
-        });
-    }, 1000);
-  }, []);
+  const { data: blogs, isPending, error } = useFetch(
+    "http://localhost:7500/bg"
+  );
 
   return (
     <div className="homepage">
@@ -53,7 +34,13 @@ const Home = () => {
 
       <div>
         {error && <div>{error}</div>}
-        {isPending && <div>Loading....</div>}
+        {isPending && (
+          <div>
+            <CircularProgress />
+            Loading....
+          </div>
+        )}
+
         {blogs && (
           <BlogList
             blogs={blogs}

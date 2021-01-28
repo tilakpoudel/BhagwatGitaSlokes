@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 
 const BlogList = (props) => {
   const blogs = props.blogs;
@@ -12,10 +13,11 @@ const BlogList = (props) => {
           <h2>
             BG {blog.chapter}.{blog.text}
           </h2>
-          <h3>{blog.sloke}</h3>
-          <h3>{blog.translation}</h3>
 
-          <button>Read More</button>
+          <Link to={`/blogs/${blog.id}`}>
+            <h3>{blog.sloke}</h3>
+            <h3>{blog.translation}</h3>
+          </Link>
         </div>
       ))}
     </div>
